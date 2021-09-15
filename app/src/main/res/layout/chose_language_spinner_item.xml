@@ -1,0 +1,8 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?android:attr/spinnerItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/chose_language_spinner_text_size"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    android:textAlignment="inherit" />
