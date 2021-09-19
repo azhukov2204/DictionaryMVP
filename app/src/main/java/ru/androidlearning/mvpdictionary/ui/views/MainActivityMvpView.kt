@@ -2,7 +2,7 @@ package ru.androidlearning.mvpdictionary.ui.views
 
 import ru.androidlearning.mvpdictionary.ui.DictionaryPresentationData
 
-interface MainActivityView {
+interface MainActivityMvpView {
     fun showTranslatedResult(dictionaryPresentationData: DictionaryPresentationData)
     fun showNoDataLabel()
     fun hideNoDataLabel()

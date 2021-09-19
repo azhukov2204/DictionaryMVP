@@ -13,7 +13,7 @@ import ru.androidlearning.mvpdictionary.ui.views.list_adapter.TranslatedResultsL
 import ru.androidlearning.mvpdictionary.ui.views.presenter.MainActivityPresenter
 import ru.androidlearning.mvpdictionary.ui.views.presenter.MainActivityPresenterFactory
 
-class MainActivity : AppCompatActivity(), MainActivityView {
+class MainActivity : AppCompatActivity(), MainActivityMvpView {
 
     private val viewBinding: ActivityMainBinding by viewBinding(ActivityMainBinding::bind)
     private val mainActivityPresenter: MainActivityPresenter by lazy { MainActivityPresenterFactory.getPresenter() }

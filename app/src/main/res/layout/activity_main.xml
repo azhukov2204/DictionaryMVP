@@ -45,7 +45,6 @@
         android:layout_marginTop="@dimen/default_margin_size"
         android:layout_marginBottom="@dimen/default_margin_size"
         android:hint="@string/enter_word_hint"
-        android:visibility="visible"
         app:endIconCheckable="true"
         app:endIconDrawable="@drawable/ic_baseline_translate_24"
         app:endIconMode="custom"

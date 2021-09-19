@@ -4,7 +4,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.plusAssign
 import ru.androidlearning.mvpdictionary.schedulers.WorkSchedulers
 import ru.androidlearning.mvpdictionary.ui.DictionaryPresentationData
-import ru.androidlearning.mvpdictionary.ui.views.MainActivityView
+import ru.androidlearning.mvpdictionary.ui.views.MainActivityMvpView
 import ru.androidlearning.mvpdictionary.ui.views.presenter.interactor.MainActivityInteractor
 
 class MainActivityPresenterImpl(
@@ -12,18 +12,18 @@ class MainActivityPresenterImpl(
     private val schedulers: WorkSchedulers
 ) : MainActivityPresenter {
 
-    private var mainActivityView: MainActivityView? = null
+    private var mainActivityMvpView: MainActivityMvpView? = null
     private val disposables = CompositeDisposable()
     private var currentData: DictionaryPresentationData? = null
 
-    override fun attachView(mainActivityView: MainActivityView) {
-        this.mainActivityView = mainActivityView
+    override fun attachView(mainActivityMvpView: MainActivityMvpView) {
+        this.mainActivityMvpView = mainActivityMvpView
         currentData?.let { showResults(it) }
     }
 
     override fun detachView() {
         disposables.clear()
-        mainActivityView = null
+        mainActivityMvpView = null
     }
 
     override fun translate(word: String, language: String) {
@@ -32,7 +32,7 @@ class MainActivityPresenterImpl(
                 mainActivityInteractor.translate(word, language)
                     .observeOn(schedulers.threadMain())
                     .subscribeOn(schedulers.threadIO())
-                    .doOnSubscribe { mainActivityView?.showProgressBar() }
+                    .doOnSubscribe { mainActivityMvpView?.showProgressBar() }
                     .subscribe(
                         ::showResults,
                         ::showError
@@ -41,19 +41,19 @@ class MainActivityPresenterImpl(
     }
 
     private fun showResults(dictionaryPresentationData: DictionaryPresentationData) {
-        mainActivityView?.hideProgressBar()
+        mainActivityMvpView?.hideProgressBar()
         currentData = dictionaryPresentationData
-        mainActivityView?.showTranslatedResult(dictionaryPresentationData)
+        mainActivityMvpView?.showTranslatedResult(dictionaryPresentationData)
         if (dictionaryPresentationData.translatedWords.isNullOrEmpty()) {
-            mainActivityView?.showNoDataLabel()
+            mainActivityMvpView?.showNoDataLabel()
         } else {
-            mainActivityView?.hideNoDataLabel()
+            mainActivityMvpView?.hideNoDataLabel()
         }
     }
 
     private fun showError(e: Throwable) {
-        mainActivityView?.hideProgressBar()
+        mainActivityMvpView?.hideProgressBar()
         e.printStackTrace()
-        mainActivityView?.showError(e.message)
+        mainActivityMvpView?.showError(e.message)
     }
 }
