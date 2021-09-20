@@ -1,10 +1,11 @@
-package ru.androidlearning.dictionary.ui.views.presenter.interactor
+package ru.androidlearning.dictionary.ui.activity.view_model.interactor
 
 import io.reactivex.rxjava3.core.Single
 import ru.androidlearning.dictionary.data.repository.DictionaryRepository
 import ru.androidlearning.dictionary.ui.DictionaryPresentationData
+import javax.inject.Inject
 
-class MainActivityInteractorImpl(
+class MainActivityInteractorImpl @Inject constructor(
     private val dictionaryRepository: DictionaryRepository
 ) : MainActivityInteractor {
     override fun translate(word: String, language: String): Single<DictionaryPresentationData> =
