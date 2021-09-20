@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVPDictionary</string>
+    <string name="app_name">EnRuDictionary</string>
     <string name="enter_word_hint">Enter a word to translate</string>
     <string name="no_data_text">No results</string>
     <string name="error_message_prefix">An error occurred: </string>
