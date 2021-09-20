@@ -7,7 +7,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "ru.androidlearning.mvpdictionary"
+        applicationId "ru.androidlearning.dictionary"
         minSdk 21
         targetSdk 30
         versionCode 1

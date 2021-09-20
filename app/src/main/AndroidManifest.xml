@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.androidlearning.mvpdictionary">
+    package="ru.androidlearning.dictionary">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <application
@@ -10,9 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MVPDictionary">
+        android:theme="@style/Theme.Dictionary">
         <activity
-            android:name=".ui.views.MainActivity"
+            android:name="ru.androidlearning.dictionary.ui.views.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
