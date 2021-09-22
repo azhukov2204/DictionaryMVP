@@ -18,7 +18,8 @@ import javax.inject.Singleton
         MainActivityInteractorModule::class,
         ApiModule::class,
         RepositoryModule::class,
-        WorkSchedulersModule::class
+        WorkSchedulersModule::class,
+        NetworkStateObservableModule::class
     ]
 )
 
