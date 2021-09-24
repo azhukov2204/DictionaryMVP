@@ -2,31 +2,26 @@ package ru.androidlearning.dictionary.di.modules
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import dagger.Module
-import dagger.Provides
-import dagger.Reusable
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.dsl.module
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.androidlearning.dictionary.data.repository.datasource.api.DictionaryApi
 import ru.androidlearning.dictionary.data.repository.datasource.api.TokenInterceptor
-import ru.androidlearning.dictionary.di.DictionaryBaseUrl
 
-@Module
-class ApiModule {
+private const val DICTIONARY_BASE_URL = "https://dictionary.yandex.net/api/v1/dicservice.json/"
 
-    @DictionaryBaseUrl
-    @Provides
-    fun provideDictionaryBaseUrl(): String = "https://dictionary.yandex.net/api/v1/dicservice.json/"
+private val gson: Gson =
+    GsonBuilder()
+        .create()
 
-    @Reusable
-    @Provides
-    fun provideDictionaryApi(@DictionaryBaseUrl baseUrl: String): DictionaryApi =
+internal val apiModule = module {
+    single<DictionaryApi> {
         Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .baseUrl(DICTIONARY_BASE_URL)
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(
                 OkHttpClient.Builder()
@@ -40,8 +35,5 @@ class ApiModule {
             )
             .build()
             .create(DictionaryApi::class.java)
-
-    private val gson: Gson =
-        GsonBuilder()
-            .create()
+    }
 }

@@ -2,9 +2,9 @@
 buildscript {
     ext {
         retrofit2_version = '2.9.0'
-        rxjava3_version = '3.0.0'
-        dagger_version = '2.38'
-        squareup_inject_version = '0.8.1'
+        koin_version = "3.1.2"
+        kotlinx_coroutines_version = "1.5.2"
+        lifecycle_ktx_version = '2.3.1'
     }
 
     repositories {
