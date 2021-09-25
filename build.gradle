@@ -3,6 +3,8 @@ buildscript {
     ext {
         retrofit2_version = '2.9.0'
         rxjava3_version = '3.0.0'
+        dagger_version = '2.38'
+        squareup_inject_version = '0.8.1'
     }
 
     repositories {

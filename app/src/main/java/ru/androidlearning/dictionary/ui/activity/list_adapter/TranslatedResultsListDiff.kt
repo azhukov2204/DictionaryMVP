@@ -1,4 +1,4 @@
-package ru.androidlearning.dictionary.ui.views.list_adapter
+package ru.androidlearning.dictionary.ui.activity.list_adapter
 
 import androidx.recyclerview.widget.DiffUtil
 
