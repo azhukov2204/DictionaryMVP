@@ -1,37 +1,26 @@
 package ru.androidlearning.dictionary.ui.activity
 
-import android.transition.Slide
-import android.transition.TransitionManager
-import android.view.Gravity
+import android.transition.*
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.transition.TransitionSet.ORDERING_SEQUENTIAL
 import by.kirich1409.viewbindingdelegate.viewBinding
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.androidlearning.dictionary.R
-import ru.androidlearning.dictionary.data.network.NetworkState
+import ru.androidlearning.dictionary.utils.network.NetworkState
 import ru.androidlearning.dictionary.databinding.ActivityMainBinding
-import ru.androidlearning.dictionary.di.modules.ViewModelFactory
 import ru.androidlearning.dictionary.ui.DataLoadingState
 import ru.androidlearning.dictionary.ui.DictionaryPresentationData
 import ru.androidlearning.dictionary.ui.activity.list_adapter.TranslatedResultsListAdapter
 import ru.androidlearning.dictionary.ui.activity.view_model.MainActivityViewModel
-import ru.androidlearning.dictionary.ui.base_abstract_templates.BaseDaggerActivity
-import javax.inject.Inject
+import ru.androidlearning.dictionary.ui.base_abstract_templates.BaseActivity
 
 private const val ANIMATION_DURATION_MS = 1000L
 
-class MainActivity : BaseDaggerActivity(R.layout.activity_main) {
+class MainActivity : BaseActivity(R.layout.activity_main) {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
-
-    private val mainActivityViewModel: MainActivityViewModel by lazy {
-        viewModelFactory.create(this).let { savedStateViewModelFactory ->
-            ViewModelProvider(this, savedStateViewModelFactory)[MainActivityViewModel::class.java]
-        }
-    }
-
+    private val mainActivityViewModel: MainActivityViewModel by stateViewModel()
     private val viewBinding: ActivityMainBinding by viewBinding(ActivityMainBinding::bind)
     private val translatedResultsListAdapter: TranslatedResultsListAdapter by lazy { TranslatedResultsListAdapter() }
 
@@ -68,7 +57,7 @@ class MainActivity : BaseDaggerActivity(R.layout.activity_main) {
         mainActivityViewModel.restoreViewState()
     }
 
-    private fun renderData(dataLoadingState: DataLoadingState<DictionaryPresentationData>?) {
+    private fun renderData(dataLoadingState: DataLoadingState<DictionaryPresentationData>) {
         when (dataLoadingState) {
             is DataLoadingState.Error -> doOnTranslateError(dataLoadingState.error)
             is DataLoadingState.Loading -> doOnTranslateLoading()
@@ -76,7 +65,7 @@ class MainActivity : BaseDaggerActivity(R.layout.activity_main) {
         }
     }
 
-    private fun displayConnectionStatus(networkState: DataLoadingState<NetworkState>?) {
+    private fun displayConnectionStatus(networkState: DataLoadingState<NetworkState>) {
         when (networkState) {
             is DataLoadingState.Error -> doOnGetNetworkStatusError(networkState.error)
             is DataLoadingState.Loading -> {
@@ -143,16 +132,23 @@ class MainActivity : BaseDaggerActivity(R.layout.activity_main) {
     }
 
     private fun doOnNoInternet() {
-        Slide(Gravity.TOP).apply { duration = ANIMATION_DURATION_MS }.let { transition ->
-            TransitionManager.beginDelayedTransition(viewBinding.mainLayout, transition)
-        }
+        TransitionSet()
+            .addTransition(ChangeBounds())
+            .addTransition(Fade())
+            .setOrdering(ORDERING_SEQUENTIAL)
+            .setDuration(ANIMATION_DURATION_MS)
+            .let { transitionSet -> TransitionManager.beginDelayedTransition(viewBinding.mainLayout, transitionSet) }
         viewBinding.noInternetBanner.visibility = View.VISIBLE
     }
 
     private fun doOnPresenceInternet() {
-        Slide(Gravity.TOP).apply { duration = ANIMATION_DURATION_MS }.let { transition ->
-            TransitionManager.beginDelayedTransition(viewBinding.mainLayout, transition)
-        }
+        TransitionSet()
+            .addTransition(Fade())
+            .addTransition(ChangeBounds())
+            .setOrdering(ORDERING_SEQUENTIAL)
+            .setDuration(ANIMATION_DURATION_MS)
+            .let { transitionSet -> TransitionManager.beginDelayedTransition(viewBinding.mainLayout, transitionSet) }
+
         viewBinding.noInternetBanner.visibility = View.GONE
     }
 }

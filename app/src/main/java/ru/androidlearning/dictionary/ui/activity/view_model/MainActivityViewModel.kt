@@ -1,31 +1,20 @@
 package ru.androidlearning.dictionary.ui.activity.view_model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.plusAssign
-import ru.androidlearning.dictionary.data.network.NetworkState
-import ru.androidlearning.dictionary.di.modules.AssistedSavedStateViewModelFactory
-import ru.androidlearning.dictionary.schedulers.WorkSchedulers
+import androidx.lifecycle.*
+import kotlinx.coroutines.*
 import ru.androidlearning.dictionary.ui.DataLoadingState
 import ru.androidlearning.dictionary.ui.DictionaryPresentationData
 import ru.androidlearning.dictionary.ui.activity.view_model.interactor.MainActivityInteractor
+import ru.androidlearning.dictionary.utils.network.NetworkState
+import ru.androidlearning.dictionary.utils.network.NetworkStateMonitor
 
 private const val SAVED_TRANSLATED_DATA_KEY = "SavedTranslatedData"
 
-class MainActivityViewModel @AssistedInject constructor(
+class MainActivityViewModel(
     private val mainActivityInteractor: MainActivityInteractor,
-    private val schedulers: WorkSchedulers,
-    @Assisted private val savedStateHandle: SavedStateHandle
+    private val networkStateMonitor: NetworkStateMonitor,
+    private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-    @AssistedFactory
-    interface Factory : AssistedSavedStateViewModelFactory<MainActivityViewModel>
 
     private val _dataLoadingLiveData = MutableLiveData<DataLoadingState<DictionaryPresentationData>>()
     val dataLoadingLiveData: LiveData<DataLoadingState<DictionaryPresentationData>>
@@ -35,42 +24,42 @@ class MainActivityViewModel @AssistedInject constructor(
     val networkStateLiveData: LiveData<DataLoadingState<NetworkState>>
         get() = _networkStateLiveData
 
-    private val disposables = CompositeDisposable()
     private var currentNetworkState: NetworkState = NetworkState.DISCONNECTED
 
+    private val mainActivityCoroutineScope by lazy {
+        CoroutineScope(
+            Dispatchers.IO
+                    + CoroutineExceptionHandler { _, throwable -> doOnGetNetworkStatusError(throwable) }
+                    + SupervisorJob()
+        )
+    }
+
     init {
-        mainActivityInteractor.getNetworkStateObservable().let { networkStateConnectableObservable ->
-            disposables +=
-                networkStateConnectableObservable
-                    .observeOn(schedulers.threadMain())
-                    .subscribeOn(schedulers.threadIO())
-                    .subscribe(
-                        ::doOnGetNetworkStatusSuccess,
-                        ::doOnGetNetworkStatusError
-                    )
+        startNetworkStateMonitoring()
+    }
 
-
-            disposables +=
-                networkStateConnectableObservable
-                    .connect()
+    private fun startNetworkStateMonitoring() {
+        mainActivityCoroutineScope.launch {
+            for (state in networkStateMonitor.channel) {
+                doOnGetNetworkStatusSuccess(state)
+            }
         }
+        networkStateMonitor.startMonitoring()
     }
 
     fun translate(word: String, language: String) {
         if (word.isNotBlank() && currentNetworkState == NetworkState.CONNECTED) {
-            disposables +=
-                mainActivityInteractor.translate(word, language)
-                    .observeOn(schedulers.threadMain())
-                    .subscribeOn(schedulers.threadIO())
-                    .doOnSubscribe { doOnTranslateSubscribe() }
-                    .subscribe(
-                        ::doOnTranslateSuccess,
-                        ::doOnTranslateError
-                    )
+            doBeforeTranslate()
+            viewModelScope.launch(
+                Dispatchers.IO
+                        + CoroutineExceptionHandler { _, throwable -> doOnTranslateError(throwable) }
+            ) {
+                doOnTranslateSuccess(mainActivityInteractor.translate(word, language))
+            }
         }
     }
 
-    private fun doOnTranslateSubscribe() {
+    private fun doBeforeTranslate() {
         _dataLoadingLiveData.postValue(DataLoadingState.Loading())
     }
 
@@ -102,7 +91,8 @@ class MainActivityViewModel @AssistedInject constructor(
     }
 
     override fun onCleared() {
-        disposables.clear()
+        networkStateMonitor.stopMonitoring()
+        mainActivityCoroutineScope.cancel()
         super.onCleared()
     }
 }
