@@ -57,7 +57,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         mainActivityViewModel.restoreViewState()
     }
 
-    private fun renderData(dataLoadingState: DataLoadingState<DictionaryPresentationData>?) {
+    private fun renderData(dataLoadingState: DataLoadingState<DictionaryPresentationData>) {
         when (dataLoadingState) {
             is DataLoadingState.Error -> doOnTranslateError(dataLoadingState.error)
             is DataLoadingState.Loading -> doOnTranslateLoading()
@@ -65,7 +65,7 @@ class MainActivity : BaseActivity(R.layout.activity_main) {
         }
     }
 
-    private fun displayConnectionStatus(networkState: DataLoadingState<NetworkState>?) {
+    private fun displayConnectionStatus(networkState: DataLoadingState<NetworkState>) {
         when (networkState) {
             is DataLoadingState.Error -> doOnGetNetworkStatusError(networkState.error)
             is DataLoadingState.Loading -> {

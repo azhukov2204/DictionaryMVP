@@ -8,6 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.androidlearning.dictionary.BuildConfig
 import ru.androidlearning.dictionary.data.repository.datasource.api.DictionaryApi
 import ru.androidlearning.dictionary.data.repository.datasource.api.TokenInterceptor
 
@@ -19,20 +20,23 @@ private val gson: Gson =
 
 internal val apiModule = module {
     single<DictionaryApi> {
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(TokenInterceptor)
+            .apply {
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(
+                        HttpLoggingInterceptor()
+                            .setLevel(HttpLoggingInterceptor.Level.BODY)
+                    )
+                }
+            }
+            .build()
+
         Retrofit.Builder()
             .baseUrl(DICTIONARY_BASE_URL)
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(
-                OkHttpClient.Builder()
-                    .addInterceptor(TokenInterceptor)
-                    .addInterceptor(
-                        HttpLoggingInterceptor()
-                            .apply {
-                                level = HttpLoggingInterceptor.Level.BODY
-                            })
-                    .build()
-            )
+            .client(okHttpClient)
             .build()
             .create(DictionaryApi::class.java)
     }

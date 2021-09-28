@@ -1,14 +1,12 @@
 package ru.androidlearning.dictionary.ui.activity.view_model
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import ru.androidlearning.dictionary.utils.network.NetworkState
-import ru.androidlearning.dictionary.utils.network.NetworkStateMonitor
+import kotlinx.coroutines.*
 import ru.androidlearning.dictionary.ui.DataLoadingState
 import ru.androidlearning.dictionary.ui.DictionaryPresentationData
 import ru.androidlearning.dictionary.ui.activity.view_model.interactor.MainActivityInteractor
+import ru.androidlearning.dictionary.utils.network.NetworkState
+import ru.androidlearning.dictionary.utils.network.NetworkStateMonitor
 
 private const val SAVED_TRANSLATED_DATA_KEY = "SavedTranslatedData"
 
@@ -28,15 +26,20 @@ class MainActivityViewModel(
 
     private var currentNetworkState: NetworkState = NetworkState.DISCONNECTED
 
+    private val mainActivityCoroutineScope by lazy {
+        CoroutineScope(
+            Dispatchers.IO
+                    + CoroutineExceptionHandler { _, throwable -> doOnGetNetworkStatusError(throwable) }
+                    + SupervisorJob()
+        )
+    }
+
     init {
         startNetworkStateMonitoring()
     }
 
     private fun startNetworkStateMonitoring() {
-        viewModelScope.launch(
-            Dispatchers.IO
-                    + CoroutineExceptionHandler { _, throwable -> doOnGetNetworkStatusError(throwable) }
-        ) {
+        mainActivityCoroutineScope.launch {
             for (state in networkStateMonitor.channel) {
                 doOnGetNetworkStatusSuccess(state)
             }
@@ -89,6 +92,7 @@ class MainActivityViewModel(
 
     override fun onCleared() {
         networkStateMonitor.stopMonitoring()
+        mainActivityCoroutineScope.cancel()
         super.onCleared()
     }
 }
