@@ -1,17 +1,17 @@
-package ru.androidlearning.dictionary.ui.activity.view_model
+package ru.androidlearning.dictionary.ui.fragments.search.view_model
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import ru.androidlearning.dictionary.ui.DataLoadingState
 import ru.androidlearning.dictionary.ui.DictionaryPresentationData
-import ru.androidlearning.dictionary.ui.activity.view_model.interactor.MainActivityInteractor
+import ru.androidlearning.dictionary.ui.fragments.search.view_model.interactor.SearchFragmentInteractor
 import ru.androidlearning.dictionary.utils.network.NetworkState
 import ru.androidlearning.dictionary.utils.network.NetworkStateMonitor
 
 private const val SAVED_TRANSLATED_DATA_KEY = "SavedTranslatedData"
 
-class MainActivityViewModel(
-    private val mainActivityInteractor: MainActivityInteractor,
+class SearchFragmentViewModel(
+    private val searchFragmentInteractor: SearchFragmentInteractor,
     private val networkStateMonitor: NetworkStateMonitor,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -47,14 +47,14 @@ class MainActivityViewModel(
         networkStateMonitor.startMonitoring()
     }
 
-    fun translate(word: String, language: String) {
+    fun search(word: String) {
         if (word.isNotBlank() && currentNetworkState == NetworkState.CONNECTED) {
             doBeforeTranslate()
             viewModelScope.launch(
                 Dispatchers.IO
                         + CoroutineExceptionHandler { _, throwable -> doOnTranslateError(throwable) }
             ) {
-                doOnTranslateSuccess(mainActivityInteractor.translate(word, language))
+                doOnTranslateSuccess(searchFragmentInteractor.search(word))
             }
         }
     }

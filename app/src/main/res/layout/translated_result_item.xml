@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/translation_result_text_view"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/default_margin_size"
-    android:textSize="@dimen/translation_result_text_size" />
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/translated_word_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_size"
+        android:textSize="@dimen/translation_result_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/translated_word_meanings_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin_size"
+        android:layout_marginBottom="@dimen/default_margin_size"
+        android:alpha="0.6"
+        android:textSize="@dimen/translation_result_text_size" />
+
+</LinearLayout>

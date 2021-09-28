@@ -7,5 +7,6 @@ internal val diModules = listOf(
     mainActivityInteractorModule,
     networkStateMonitorModule,
     repositoryModule,
-    viewModelModule
+    viewModelModule,
+    ciceroneModule
 )

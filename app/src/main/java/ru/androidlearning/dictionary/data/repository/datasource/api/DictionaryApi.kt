@@ -3,12 +3,11 @@ package ru.androidlearning.dictionary.data.repository.datasource.api
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
-import ru.androidlearning.dictionary.data.DictionaryData
+import ru.androidlearning.dictionary.data.SearchData
 
 interface DictionaryApi {
-    @GET("lookup")
-    fun translate(
-        @Query("text") word: String,
-        @Query("lang") lang: String,
-    ): Deferred<DictionaryData>
+    @GET("words/search")
+    fun search(
+        @Query("search") word: String
+    ): Deferred<List<SearchData>>
 }

@@ -2,12 +2,12 @@ package ru.androidlearning.dictionary.di.modules
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.androidlearning.dictionary.ui.activity.view_model.MainActivityViewModel
+import ru.androidlearning.dictionary.ui.fragments.search.view_model.SearchFragmentViewModel
 
 internal val viewModelModule = module {
     viewModel {
-        MainActivityViewModel(
-            mainActivityInteractor = get(),
+        SearchFragmentViewModel(
+            searchFragmentInteractor = get(),
             networkStateMonitor = get(),
             savedStateHandle = get()
         )

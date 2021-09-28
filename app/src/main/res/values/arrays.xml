@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="translate_languages">
-        <item>"ru-en"</item>
-        <item>"en-ru"</item>
-    </string-array>
-</resources>
