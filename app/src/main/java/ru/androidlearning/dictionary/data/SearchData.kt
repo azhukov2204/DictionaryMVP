@@ -1,11 +1,18 @@
 package ru.androidlearning.dictionary.data
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "search_data", indices = [Index("word")])
 data class SearchData(
-    @SerializedName("id") val id: Int?,
-    @SerializedName("text") val word: String?,
-    @SerializedName("meanings") val meanings: List<Meanings>?
+    @PrimaryKey
+    @ColumnInfo(name = "id") @SerializedName("id") val id: Int?,
+    @ColumnInfo(name = "word") @SerializedName("text") val word: String?,
+    @ColumnInfo(name = "meanings") @SerializedName("meanings") val meanings: List<Meanings>?,
+    @ColumnInfo(name = "saved_time") var savedTime: Long?
 )
 
 data class Meanings(

@@ -4,30 +4,34 @@ import android.transition.ChangeBounds
 import android.transition.Fade
 import android.transition.TransitionManager
 import android.transition.TransitionSet
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.github.terrakok.cicerone.Router
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.androidlearning.dictionary.R
 import ru.androidlearning.dictionary.databinding.FragmentSearchBinding
+import ru.androidlearning.dictionary.navigation.DetailsFragmentScreen
+import ru.androidlearning.dictionary.navigation.HistoryFragmentScreen
 import ru.androidlearning.dictionary.ui.DataLoadingState
 import ru.androidlearning.dictionary.ui.DictionaryPresentationData
-import ru.androidlearning.dictionary.ui.base_abstract_templates.BaseFragment
-import ru.androidlearning.dictionary.ui.fragments.search.list_adapter.TranslatedResultsListAdapter
-import ru.androidlearning.dictionary.ui.fragments.search.view_model.SearchFragmentViewModel
+import ru.androidlearning.dictionary.ui.base_abstract_templates.BaseMVVMFragment
+import ru.androidlearning.dictionary.ui.fragments.search.dialog.SearchHistoryDialogFragment
 import ru.androidlearning.dictionary.utils.network.NetworkState
 
 private const val ANIMATION_DURATION_MS = 1000L
 
-class SearchFragment() : BaseFragment(R.layout.fragment_search) {
-    companion object {
-        fun newInstance() = SearchFragment()
-    }
-
+class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
     private val searchFragmentViewModel: SearchFragmentViewModel by stateViewModel()
     private val viewBinding: FragmentSearchBinding by viewBinding(FragmentSearchBinding::bind)
-    private val translatedResultsListAdapter: TranslatedResultsListAdapter by lazy { TranslatedResultsListAdapter() }
+    private val router: Router by inject()
+    private val translatedResultsListAdapter: TranslatedResultsListAdapter by lazy { TranslatedResultsListAdapter(::onItemClick) }
 
     override fun initViews() {
         with(viewBinding) {
@@ -39,11 +43,39 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search) {
                 addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
             }
         }
+        initToolbar()
     }
+
+    private fun initToolbar() {
+        (context as AppCompatActivity).apply {
+            setSupportActionBar(viewBinding.toolbar)
+        }
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.search_fragment_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
+            R.id.open_history_item -> {
+                router.navigateTo(HistoryFragmentScreen())
+                true
+            }
+            R.id.search_history_item -> {
+                SearchHistoryDialogFragment.newInstance().show(childFragmentManager, null)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
 
     override fun observeToLiveData() {
         with(searchFragmentViewModel) {
-            dataLoadingLiveData.observe(this@SearchFragment) { dataLoadingState ->
+            getLiveData().observe(this@SearchFragment) { dataLoadingState ->
                 renderData(dataLoadingState)
             }
             networkStateLiveData.observe(this@SearchFragment) { networkState ->
@@ -67,8 +99,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search) {
     private fun displayConnectionStatus(networkState: DataLoadingState<NetworkState>) {
         when (networkState) {
             is DataLoadingState.Error -> doOnGetNetworkStatusError(networkState.error)
-            is DataLoadingState.Loading -> {
-            }
+            is DataLoadingState.Loading -> {}
             is DataLoadingState.Success -> doOnGetNetworkStatusSuccess(networkState.data)
         }
     }
@@ -90,6 +121,10 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search) {
     private fun doOnTranslateError(e: Throwable) {
         hideProgressBar()
         showError(e.message)
+    }
+
+    private fun onItemClick(translatedWord: DictionaryPresentationData.TranslatedWord) {
+        router.navigateTo(DetailsFragmentScreen(translatedWord))
     }
 
     private fun doOnGetNetworkStatusSuccess(networkState: NetworkState) {
@@ -148,4 +183,7 @@ class SearchFragment() : BaseFragment(R.layout.fragment_search) {
         viewBinding.noInternetBanner.visibility = View.GONE
     }
 
+    companion object {
+        fun newInstance() = SearchFragment()
+    }
 }

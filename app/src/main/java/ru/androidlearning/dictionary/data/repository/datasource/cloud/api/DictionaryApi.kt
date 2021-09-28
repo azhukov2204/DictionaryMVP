@@ -1,4 +1,4 @@
-package ru.androidlearning.dictionary.data.repository.datasource.api
+package ru.androidlearning.dictionary.data.repository.datasource.cloud.api
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
