@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/saved_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin_size"
+        android:gravity="end"
+        tools:text="date" />
 
     <TextView
         android:id="@+id/translated_word_text_view"
@@ -10,7 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin_size"
         android:textSize="@dimen/translation_result_text_size"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="word" />
 
     <TextView
         android:id="@+id/translated_word_meanings_text_view"
@@ -19,6 +29,6 @@
         android:layout_marginTop="@dimen/default_margin_size"
         android:layout_marginBottom="@dimen/default_margin_size"
         android:alpha="0.6"
-        android:textSize="@dimen/translation_result_text_size" />
-
+        android:textSize="@dimen/translation_result_text_size"
+        tools:text="description" />
 </LinearLayout>

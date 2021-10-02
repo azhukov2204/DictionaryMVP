@@ -9,10 +9,9 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.androidlearning.dictionary.BuildConfig
-import ru.androidlearning.dictionary.data.repository.datasource.api.DictionaryApi
-import ru.androidlearning.dictionary.data.repository.datasource.api.TokenInterceptor
+import ru.androidlearning.dictionary.data.repository.datasource.cloud.api.DictionaryApi
 
-private const val DICTIONARY_BASE_URL = "https://dictionary.yandex.net/api/v1/dicservice.json/"
+private const val DICTIONARY_BASE_URL = "https://dictionary.skyeng.ru/api/public/v1/"
 
 private val gson: Gson =
     GsonBuilder()
@@ -21,7 +20,6 @@ private val gson: Gson =
 internal val apiModule = module {
     single<DictionaryApi> {
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(TokenInterceptor)
             .apply {
                 if (BuildConfig.DEBUG) {
                     addInterceptor(

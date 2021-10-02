@@ -1,4 +1,4 @@
-package ru.androidlearning.dictionary.data.repository.datasource.api
+package ru.androidlearning.dictionary.data.repository.datasource.cloud.api
 
 import okhttp3.Interceptor
 import okhttp3.Response
