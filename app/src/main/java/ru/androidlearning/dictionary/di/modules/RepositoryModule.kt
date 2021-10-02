@@ -10,12 +10,14 @@ import ru.androidlearning.dictionary.data.repository.datasource.local.Dictionary
 import ru.androidlearning.dictionary.data.repository.datasource.local.DictionaryDataSourceLocalImpl
 import ru.androidlearning.dictionary.data.repository.datasource.local.storage.DictionaryStorage
 
+private const val DB_FILE_NAME = "dictionary.db"
+
 internal val repositoryModule = module {
     factory<DictionaryRepository> { DictionaryRepositoryImpl(dictionaryDataSourceCloud = get(), dictionaryDataSourceLocal = get()) }
     factory<DictionaryDataSourceCloud> { DictionaryDataSourceCloudImpl(dictionaryApi = get()) }
     factory<DictionaryDataSourceLocal> { DictionaryDataSourceLocalImpl(dictionaryStorage = get()) }
     single {
-        Room.databaseBuilder(get(), DictionaryStorage::class.java, "dictionary.db")
+        Room.databaseBuilder(get(), DictionaryStorage::class.java, DB_FILE_NAME)
             .build()
     }
 }

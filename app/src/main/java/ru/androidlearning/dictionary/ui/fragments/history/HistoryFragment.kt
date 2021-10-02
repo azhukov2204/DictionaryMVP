@@ -47,21 +47,21 @@ class HistoryFragment : BaseMVVMFragment(R.layout.fragment_history) {
     }
 
     private fun doOnGetHistorySuccess(historyData: DictionaryPresentationData) {
-        hideProgressBar()
+        showProgressBar(false)
         historyListAdapter.submitList(historyData.translatedWords)
         if (historyData.translatedWords.isNullOrEmpty()) {
-            showNoDataLabel()
+            showNoDataLabel(true)
         } else {
-            hideNoDataLabel()
+            showNoDataLabel(false)
         }
     }
 
     private fun doOnHistoryLoading() {
-        showProgressBar()
+        showProgressBar(true)
     }
 
     private fun doOnGetHistoryError(e: Throwable) {
-        hideProgressBar()
+        showProgressBar(false)
         showError(e.message)
     }
 
@@ -69,24 +69,24 @@ class HistoryFragment : BaseMVVMFragment(R.layout.fragment_history) {
         router.navigateTo(DetailsFragmentScreen(dictionaryPresentationData))
     }
 
-    private fun showProgressBar() {
-        viewBinding.includedLoadingSheet.loadingSheet.visibility = View.VISIBLE
-    }
-
-    private fun hideProgressBar() {
-        viewBinding.includedLoadingSheet.loadingSheet.visibility = View.GONE
+    private fun showProgressBar(isShow: Boolean) {
+        viewBinding.includedLoadingSheet.loadingSheet.visibility = if (isShow) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun showError(errorMessage: String?) {
         Toast.makeText(requireContext(), getString(R.string.error_message_prefix) + errorMessage, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showNoDataLabel() {
-        viewBinding.noDataTextView.visibility = View.VISIBLE
-    }
-
-    private fun hideNoDataLabel() {
-        viewBinding.noDataTextView.visibility = View.GONE
+    private fun showNoDataLabel(isShow: Boolean) {
+        viewBinding.noDataTextView.visibility = if (isShow) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     override fun restoreViewState() {

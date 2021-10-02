@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import ru.androidlearning.dictionary.data.SearchData
 import ru.androidlearning.dictionary.data.repository.datasource.local.storage.dao.DictionaryDao
 
-@Database(exportSchema = false, entities = [SearchData::class], version = 1)
+@Database(exportSchema = true, entities = [SearchData::class], version = 1)
 @TypeConverters(StorageConverters::class)
 abstract class DictionaryStorage : RoomDatabase() {
     abstract fun dictionaryDao(): DictionaryDao
