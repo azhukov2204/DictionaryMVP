@@ -7,7 +7,7 @@ import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import org.koin.android.ext.android.inject
 import ru.androidlearning.dictionary.R
-import ru.androidlearning.dictionary.navigation.SearchFragmentScreen
+import ru.androidlearning.presentation.navigation.SearchFragmentScreen
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 

@@ -8,3 +8,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "EnRuDictionary"
 include ':app'
+include ':core'
+include ':presentation'
+include ':model'
+include ':utils'

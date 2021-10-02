@@ -1,0 +1,5 @@
+package ru.androidlearning.model.repository.datasource.cloud
+
+import ru.androidlearning.model.repository.datasource.DictionaryDataSource
+
+interface DictionaryDataSourceCloud: DictionaryDataSource
