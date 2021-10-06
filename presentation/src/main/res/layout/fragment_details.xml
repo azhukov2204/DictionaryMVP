@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ru.androidlearning.presentation.fragments.details.DetailsFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:title="@string/details_fragment_title"
+        app:titleTextColor="@android:color/white" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin_size"
+        android:text="@string/word_label_text"
+        android:textSize="@dimen/translation_result_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/word_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin_size"
+        android:layout_marginBottom="@dimen/default_margin_size"
+        android:alpha="0.7"
+        android:paddingStart="@dimen/default_padding_size"
+        android:paddingEnd="@dimen/default_padding_size"
+        android:textSize="@dimen/translation_result_text_size"
+        tools:text="word" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin_size"
+        android:text="@string/word_meaning_label_text"
+        android:textSize="@dimen/translation_result_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/word_meaning_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin_size"
+        android:layout_marginBottom="@dimen/default_margin_size"
+        android:alpha="0.7"
+        android:paddingStart="@dimen/default_padding_size"
+        android:paddingEnd="@dimen/default_padding_size"
+        android:textSize="@dimen/translation_result_text_size"
+        tools:text="word meaning" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin_size"
+        android:text="@string/transcription_label_text"
+        android:textSize="@dimen/translation_result_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/word_transcription_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_margin_size"
+        android:layout_marginBottom="@dimen/default_margin_size"
+        android:alpha="0.7"
+        android:paddingStart="@dimen/default_padding_size"
+        android:paddingEnd="@dimen/default_padding_size"
+        android:textSize="@dimen/translation_result_text_size"
+        tools:text="Word transcription" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/image_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_margin_size"
+        android:src="@drawable/no_photo" />
+
+</LinearLayout>
