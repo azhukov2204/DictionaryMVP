@@ -13,4 +13,11 @@
         android:orderInCategory="20"
         android:title="@string/search_history_menu_item"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/stopwatch_item"
+        android:icon="@drawable/ic_stopwatch"
+        android:orderInCategory="30"
+        android:title="@string/stopwatch_menu_item"
+        app:showAsAction="ifRoom" />
 </menu>

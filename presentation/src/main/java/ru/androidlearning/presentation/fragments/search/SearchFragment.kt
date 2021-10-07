@@ -13,18 +13,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.terrakok.cicerone.Router
+import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMFragment
 import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.FragmentSearchBinding
+import ru.androidlearning.presentation.fragments.InstantSearchStateFlow
 import ru.androidlearning.presentation.fragments.search.dialog.SearchHistoryDialogFragment
 import ru.androidlearning.presentation.navigation.DetailsFragmentScreen
 import ru.androidlearning.presentation.navigation.HistoryFragmentScreen
+import ru.androidlearning.presentation.navigation.StopwatchFragmentScreen
 import ru.androidlearning.utils.network.NetworkState
 
 private const val ANIMATION_DURATION_MS = 1000L
 
+@FlowPreview
 class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
     private val searchFragmentViewModel: SearchFragmentViewModel by stateViewModel()
     private val viewBinding: FragmentSearchBinding by viewBinding(FragmentSearchBinding::bind)
@@ -40,6 +44,7 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
                 adapter = translatedResultsListAdapter
                 addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
             }
+            InstantSearchStateFlow.beginObserveEditTextChanges(enterWordEditText)
         }
         initToolbar()
     }
@@ -49,6 +54,11 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
             setSupportActionBar(viewBinding.toolbar)
         }
         setHasOptionsMenu(true)
+    }
+
+    override fun onDestroyView() {
+        InstantSearchStateFlow.endObserveEditTextChanges(viewBinding.enterWordEditText)
+        super.onDestroyView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -64,6 +74,10 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
             }
             R.id.search_history_item -> {
                 SearchHistoryDialogFragment.newInstance().show(childFragmentManager, null)
+                true
+            }
+            R.id.stopwatch_item -> {
+                router.navigateTo(StopwatchFragmentScreen())
                 true
             }
             else -> {

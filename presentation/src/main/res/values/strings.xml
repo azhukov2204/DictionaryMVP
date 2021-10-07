@@ -15,4 +15,10 @@
     <string name="search_history_menu_item">Search history</string>
     <string name="search_history_text_input_hint">Enter a word to find</string>
     <string name="close_button_text">Close</string>
+    <string name="stopwatch_menu_item">Stopwatch</string>
+    <string name="stopwatch_initial_value">00:00:000</string>
+    <string name="start_button_text">Start</string>
+    <string name="pause_button_text">Pause</string>
+    <string name="stop_button_text">Stop</string>
+    <string name="stopwatch_fragment_title">Stopwatch</string>
 </resources>
