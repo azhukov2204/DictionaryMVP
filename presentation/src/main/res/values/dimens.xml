@@ -3,4 +3,6 @@
     <dimen name="default_margin_size">5dp</dimen>
     <dimen name="translation_result_text_size">20sp</dimen>
     <dimen name="default_padding_size">5dp</dimen>
+    <dimen name="stopwatch_time_text_size">45sp</dimen>
+    <dimen name="stopwatch_margin">30dp</dimen>
 </resources>

@@ -6,6 +6,9 @@ import ru.androidlearning.presentation.interactor.InteractorImpl
 
 val interactorModule = module {
     factory<Interactor> {
-        InteractorImpl(dictionaryRepository = get())
+        InteractorImpl(
+            dictionaryRepository = get(),
+            stopwatchOrchestrators = arrayOf(get(), get())
+        )
     }
 }
