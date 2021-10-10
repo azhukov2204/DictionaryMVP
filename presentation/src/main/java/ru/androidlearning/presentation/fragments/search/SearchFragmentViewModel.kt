@@ -5,12 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import ru.androidlearning.core.DataLoadingState
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMViewModel
 import ru.androidlearning.presentation.fragments.InstantSearchFlow
 import ru.androidlearning.presentation.interactor.Interactor
@@ -42,9 +40,11 @@ class SearchFragmentViewModel(
         coroutineScopeIO.launch(
             CoroutineExceptionHandler { _, throwable -> doOnGetNetworkStatusError(throwable) }
         ) {
-            for (state in networkStateMonitor.channel) {
-                doOnGetNetworkStatusSuccess(state)
-            }
+            networkStateMonitor
+                .networkStateFlow
+                .collect { networkState ->
+                    doOnGetNetworkStatusSuccess(networkState)
+                }
         }
         networkStateMonitor.startMonitoring()
     }
@@ -74,9 +74,9 @@ class SearchFragmentViewModel(
         dataLoadingLiveData.postValue(DataLoadingState.Loading())
     }
 
-    private fun doOnTranslateSuccess(dictionaryPresentationData: ru.androidlearning.core.DictionaryPresentationData) {
-        dataLoadingLiveData.postValue(DataLoadingState.Success(dictionaryPresentationData))
-        savedStateHandle[SAVED_TRANSLATED_DATA_KEY] = dictionaryPresentationData
+    private fun doOnTranslateSuccess(dictionaryPresentationDataModel: DictionaryPresentationDataModel) {
+        dataLoadingLiveData.postValue(DataLoadingState.Success(dictionaryPresentationDataModel))
+        savedStateHandle[SAVED_TRANSLATED_DATA_KEY] = dictionaryPresentationDataModel
     }
 
     private fun doOnTranslateError(e: Throwable) {
@@ -95,7 +95,7 @@ class SearchFragmentViewModel(
     }
 
     fun restoreViewState() {
-        val dictionaryPresentationData = savedStateHandle.get<ru.androidlearning.core.DictionaryPresentationData>(SAVED_TRANSLATED_DATA_KEY)
+        val dictionaryPresentationData = savedStateHandle.get<DictionaryPresentationDataModel>(SAVED_TRANSLATED_DATA_KEY)
         dictionaryPresentationData?.let {
             dataLoadingLiveData.postValue(DataLoadingState.Success(it))
         }

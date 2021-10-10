@@ -6,17 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.TranslatedResultItemBinding
 import ru.androidlearning.presentation.fragments.TranslatedWordListDiff
 
-class TranslatedResultsListAdapter(private val onItemClick: (ru.androidlearning.core.DictionaryPresentationData.TranslatedWord) -> Unit) :
-    ListAdapter<ru.androidlearning.core.DictionaryPresentationData.TranslatedWord, TranslatedResultsListAdapter.TranslatedResultsViewHolder>(TranslatedWordListDiff) {
+class TranslatedResultsListAdapter(private val onItemClick: (DictionaryPresentationDataModel.TranslatedWord) -> Unit) :
+    ListAdapter<DictionaryPresentationDataModel.TranslatedWord, TranslatedResultsListAdapter.TranslatedResultsViewHolder>(TranslatedWordListDiff) {
 
     inner class TranslatedResultsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val viewBinding: TranslatedResultItemBinding by viewBinding(TranslatedResultItemBinding::bind)
 
-        fun bind(translatedWord: ru.androidlearning.core.DictionaryPresentationData.TranslatedWord) {
+        fun bind(translatedWord: DictionaryPresentationDataModel.TranslatedWord) {
             with(viewBinding) {
                 translatedWordTextView.text = translatedWord.word
                 translatedWordMeaningsTextView.text = translatedWord.meaning

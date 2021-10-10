@@ -16,6 +16,8 @@ import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import ru.androidlearning.core.DataLoadingState
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMFragment
 import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.FragmentSearchBinding
@@ -30,6 +32,7 @@ private const val ANIMATION_DURATION_MS = 1000L
 
 @FlowPreview
 class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
+
     private val searchFragmentViewModel: SearchFragmentViewModel by stateViewModel()
     private val viewBinding: FragmentSearchBinding by viewBinding(FragmentSearchBinding::bind)
     private val router: Router by inject()
@@ -87,10 +90,10 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
 
     override fun observeToLiveData() {
         with(searchFragmentViewModel) {
-            getLiveData().observe(this@SearchFragment) { dataLoadingState ->
+            getLiveData().observe(viewLifecycleOwner) { dataLoadingState ->
                 renderData(dataLoadingState)
             }
-            networkStateLiveData.observe(this@SearchFragment) { networkState ->
+            networkStateLiveData.observe(viewLifecycleOwner) { networkState ->
                 displayConnectionStatus(networkState)
             }
         }
@@ -100,26 +103,26 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
         searchFragmentViewModel.restoreViewState()
     }
 
-    private fun renderData(dataLoadingState: ru.androidlearning.core.DataLoadingState<ru.androidlearning.core.DictionaryPresentationData>) {
+    private fun renderData(dataLoadingState: DataLoadingState<DictionaryPresentationDataModel>) {
         when (dataLoadingState) {
-            is ru.androidlearning.core.DataLoadingState.Error -> doOnTranslateError(dataLoadingState.error)
-            is ru.androidlearning.core.DataLoadingState.Loading -> doOnTranslateLoading()
-            is ru.androidlearning.core.DataLoadingState.Success -> doOnTranslateSuccess(dataLoadingState.data)
+            is DataLoadingState.Error -> doOnTranslateError(dataLoadingState.error)
+            is DataLoadingState.Loading -> doOnTranslateLoading()
+            is DataLoadingState.Success -> doOnTranslateSuccess(dataLoadingState.data)
         }
     }
 
-    private fun displayConnectionStatus(networkState: ru.androidlearning.core.DataLoadingState<NetworkState>) {
+    private fun displayConnectionStatus(networkState: DataLoadingState<NetworkState>) {
         when (networkState) {
-            is ru.androidlearning.core.DataLoadingState.Error -> doOnGetNetworkStatusError(networkState.error)
-            is ru.androidlearning.core.DataLoadingState.Loading -> {}
-            is ru.androidlearning.core.DataLoadingState.Success -> doOnGetNetworkStatusSuccess(networkState.data)
+            is DataLoadingState.Error -> doOnGetNetworkStatusError(networkState.error)
+            is DataLoadingState.Loading -> {}
+            is DataLoadingState.Success -> doOnGetNetworkStatusSuccess(networkState.data)
         }
     }
 
-    private fun doOnTranslateSuccess(dictionaryPresentationData: ru.androidlearning.core.DictionaryPresentationData) {
+    private fun doOnTranslateSuccess(dictionaryPresentationDataModel: DictionaryPresentationDataModel) {
         hideProgressBar()
-        showTranslatedResult(dictionaryPresentationData)
-        if (dictionaryPresentationData.translatedWords.isNullOrEmpty()) {
+        showTranslatedResult(dictionaryPresentationDataModel)
+        if (dictionaryPresentationDataModel.translatedWords.isNullOrEmpty()) {
             showNoDataLabel()
         } else {
             hideNoDataLabel()
@@ -135,7 +138,7 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
         showError(e.message)
     }
 
-    private fun onItemClick(translatedWord: ru.androidlearning.core.DictionaryPresentationData.TranslatedWord) {
+    private fun onItemClick(translatedWord: DictionaryPresentationDataModel.TranslatedWord) {
         router.navigateTo(DetailsFragmentScreen(translatedWord))
     }
 
@@ -150,8 +153,8 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
         showError(getString(R.string.error_getting_connection_status_message) + e.message)
     }
 
-    private fun showTranslatedResult(dictionaryPresentationData: ru.androidlearning.core.DictionaryPresentationData) {
-        translatedResultsListAdapter.submitList(dictionaryPresentationData.translatedWords)
+    private fun showTranslatedResult(dictionaryPresentationDataModel: DictionaryPresentationDataModel) {
+        translatedResultsListAdapter.submitList(dictionaryPresentationDataModel.translatedWords)
     }
 
     private fun showNoDataLabel() {

@@ -1,18 +1,18 @@
 package ru.androidlearning.presentation.fragments
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.androidlearning.core.DictionaryPresentationData
+import ru.androidlearning.core.DictionaryPresentationDataModel
 
-object TranslatedWordListDiff : DiffUtil.ItemCallback<DictionaryPresentationData.TranslatedWord>() {
+object TranslatedWordListDiff : DiffUtil.ItemCallback<DictionaryPresentationDataModel.TranslatedWord>() {
     override fun areItemsTheSame(
-        oldItem: DictionaryPresentationData.TranslatedWord,
-        newItem: DictionaryPresentationData.TranslatedWord
+        oldItem: DictionaryPresentationDataModel.TranslatedWord,
+        newItem: DictionaryPresentationDataModel.TranslatedWord
     ): Boolean =
         oldItem.id == newItem.id
 
     override fun areContentsTheSame(
-        oldItem: DictionaryPresentationData.TranslatedWord,
-        newItem: DictionaryPresentationData.TranslatedWord
+        oldItem: DictionaryPresentationDataModel.TranslatedWord,
+        newItem: DictionaryPresentationDataModel.TranslatedWord
     ): Boolean =
         oldItem == newItem
 }

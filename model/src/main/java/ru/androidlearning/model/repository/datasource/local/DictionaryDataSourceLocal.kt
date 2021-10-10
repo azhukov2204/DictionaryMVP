@@ -1,10 +1,10 @@
 package ru.androidlearning.model.repository.datasource.local
 
-import ru.androidlearning.model.SearchData
+import ru.androidlearning.model.SearchDto
 import ru.androidlearning.model.repository.datasource.DictionaryDataSource
 
 interface DictionaryDataSourceLocal : DictionaryDataSource {
-    suspend fun retain(searchData: SearchData)
-    suspend fun retain(searchDataList: List<SearchData>)
-    suspend fun getHistory(): List<SearchData>
+    suspend fun retain(searchDto: SearchDto)
+    suspend fun retain(searchDtoList: List<SearchDto>)
+    suspend fun getHistory(): List<SearchDto>
 }

@@ -43,4 +43,6 @@ dependencies {
     androidTestImplementation(TestImpl.ESPRESSO)
     implementation(Kotlin.KOTLINX_COROUTINES_CORE)
     implementation(Kotlin.KOTLINX_COROUTINES_ANDROID)
+    implementation(Koin.KOIN_CORE)
+    implementation(Koin.KOIN_ANDROID)
 }

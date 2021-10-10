@@ -6,11 +6,15 @@ import com.github.terrakok.cicerone.NavigatorHolder
 import com.github.terrakok.cicerone.Router
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import org.koin.android.ext.android.inject
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityScope
+import org.koin.core.scope.Scope
 import ru.androidlearning.dictionary.R
 import ru.androidlearning.presentation.navigation.SearchFragmentScreen
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class MainActivity : AppCompatActivity(R.layout.activity_main), AndroidScopeComponent {
 
+    override val scope: Scope by activityScope()
     private val router: Router by inject()
     private val navigatorHolder: NavigatorHolder by inject()
     private val navigator = AppNavigator(this, R.id.main_container)

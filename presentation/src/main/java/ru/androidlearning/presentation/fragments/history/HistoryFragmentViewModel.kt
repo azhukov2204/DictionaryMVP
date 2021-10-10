@@ -2,6 +2,8 @@ package ru.androidlearning.presentation.fragments.history
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import ru.androidlearning.core.DataLoadingState
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMViewModel
 import ru.androidlearning.presentation.interactor.Interactor
 
@@ -19,15 +21,15 @@ class HistoryFragmentViewModel(
     }
 
     private fun doBeforeGetHistory() {
-        dataLoadingLiveData.postValue(ru.androidlearning.core.DataLoadingState.Loading())
+        dataLoadingLiveData.postValue(DataLoadingState.Loading())
     }
 
-    private fun doOnGetHistorySuccess(dictionaryPresentationData: ru.androidlearning.core.DictionaryPresentationData) {
-        dataLoadingLiveData.postValue(ru.androidlearning.core.DataLoadingState.Success(dictionaryPresentationData))
+    private fun doOnGetHistorySuccess(dictionaryPresentationDataModel: DictionaryPresentationDataModel) {
+        dataLoadingLiveData.postValue(DataLoadingState.Success(dictionaryPresentationDataModel))
     }
 
     private fun doOnGetHistoryError(e: Throwable) {
         e.printStackTrace()
-        dataLoadingLiveData.postValue(ru.androidlearning.core.DataLoadingState.Error(e))
+        dataLoadingLiveData.postValue(DataLoadingState.Error(e))
     }
 }

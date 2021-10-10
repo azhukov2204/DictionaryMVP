@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import ru.androidlearning.core.DataLoadingState
-import ru.androidlearning.core.DictionaryPresentationData
+import ru.androidlearning.core.DictionaryPresentationDataModel
 
 abstract class BaseMVVMViewModel : ViewModel() {
 
-    protected val dataLoadingLiveData = MutableLiveData<DataLoadingState<DictionaryPresentationData>>()
-    fun getLiveData(): LiveData<DataLoadingState<DictionaryPresentationData>> = dataLoadingLiveData
+    protected val dataLoadingLiveData = MutableLiveData<DataLoadingState<DictionaryPresentationDataModel>>()
+    fun getLiveData(): LiveData<DataLoadingState<DictionaryPresentationDataModel>> = dataLoadingLiveData
 
     protected val coroutineScopeIO by lazy {
         CoroutineScope(

@@ -42,6 +42,7 @@ object Versions {
     const val ANDROID_MATERIAL = "1.4.0"
     const val ANDROIDX_CONSTRAINT_LAYOUT = "2.1.1"
     const val ANDROIDX_LEGACY_SUPPORT = "1.0.0"
+    const val ANDROIDX_ANNOTATION = "1.2.0"
 }
 
 object Gradle {
@@ -55,6 +56,7 @@ object Design {
     const val MATERIAL = "com.google.android.material:material:${Versions.ANDROID_MATERIAL}"
     const val CONSTRAINT_LAYOUT = "androidx.constraintlayout:constraintlayout:${Versions.ANDROIDX_CONSTRAINT_LAYOUT}"
     const val LEGACY = "androidx.legacy:legacy-support-v4:${Versions.ANDROIDX_LEGACY_SUPPORT}"
+    const val ANNOTATION = "androidx.annotation:annotation:${Versions.ANDROIDX_ANNOTATION}"
 }
 
 object TestImpl {

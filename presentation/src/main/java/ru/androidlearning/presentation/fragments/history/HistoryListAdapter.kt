@@ -6,19 +6,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.HistoryListItemBinding
 import ru.androidlearning.presentation.fragments.TranslatedWordListDiff
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HistoryListAdapter(private val onItemClick: (ru.androidlearning.core.DictionaryPresentationData.TranslatedWord) -> Unit) :
-    ListAdapter<ru.androidlearning.core.DictionaryPresentationData.TranslatedWord, HistoryListAdapter.HistoryListViewHolder>(TranslatedWordListDiff) {
+class HistoryListAdapter(private val onItemClick: (DictionaryPresentationDataModel.TranslatedWord) -> Unit) :
+    ListAdapter<DictionaryPresentationDataModel.TranslatedWord, HistoryListAdapter.HistoryListViewHolder>(TranslatedWordListDiff) {
 
     inner class HistoryListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val viewBinding: HistoryListItemBinding by viewBinding(HistoryListItemBinding::bind)
 
-        fun bind(translatedWord: ru.androidlearning.core.DictionaryPresentationData.TranslatedWord) {
+        fun bind(translatedWord: DictionaryPresentationDataModel.TranslatedWord) {
             with(viewBinding) {
                 val simpleDayFormat = SimpleDateFormat(root.context.getString(R.string.date_format), Locale.getDefault())
                 translatedWordTextView.text = translatedWord.word
@@ -40,7 +41,7 @@ class HistoryListAdapter(private val onItemClick: (ru.androidlearning.core.Dicti
         holder.bind(getItem(position))
     }
 
-    override fun submitList(list: List<ru.androidlearning.core.DictionaryPresentationData.TranslatedWord?>?) {
+    override fun submitList(list: List<DictionaryPresentationDataModel.TranslatedWord?>?) {
         list?.sortedByDescending { it?.savedTime }
             .let { super.submitList(it) }
     }
