@@ -3,12 +3,12 @@ package ru.androidlearning.presentation.fragments
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
-object InstantSearchStateFlow {
+object InstantSearchFlow {
     private val mutableSearchStateFlow = MutableStateFlow("")
-    val searchStateFlow: StateFlow<String> = mutableSearchStateFlow
+    val searchFlow: Flow<String> = mutableSearchStateFlow
 
     private val textWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

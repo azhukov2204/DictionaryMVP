@@ -13,17 +13,17 @@ class StopwatchOrchestratorImpl(private val stopwatchStateHolder: StopwatchState
 
     private val mutableTicker = MutableStateFlow(STOPWATCH_INITIAL_VALUE)
     override val ticker: StateFlow<String> = mutableTicker
+    private var job: Job? = null
 
     private val scope by lazy {
         CoroutineScope(
-            Dispatchers.Default
-                    + SupervisorJob()
+            SupervisorJob()
                     + CoroutineExceptionHandler { _, throwable -> throwable.printStackTrace() }
         )
     }
 
     override fun start() {
-        startJob()
+        job ?: startJob()
         stopwatchStateHolder.start()
     }
 
@@ -39,7 +39,7 @@ class StopwatchOrchestratorImpl(private val stopwatchStateHolder: StopwatchState
     }
 
     private fun startJob() {
-        scope.launch {
+        job = scope.launch {
             while (isActive) {
                 mutableTicker.value = stopwatchStateHolder.getStringTimeRepresentation()
                 delay(DEFAULT_DELAY_MS)
@@ -48,6 +48,8 @@ class StopwatchOrchestratorImpl(private val stopwatchStateHolder: StopwatchState
     }
 
     private fun stopJob() {
+        job?.cancel()
+        job = null
         scope.coroutineContext.cancelChildren()
     }
 

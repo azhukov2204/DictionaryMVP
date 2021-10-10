@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMFragment
 import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.FragmentSearchBinding
-import ru.androidlearning.presentation.fragments.InstantSearchStateFlow
+import ru.androidlearning.presentation.fragments.InstantSearchFlow
 import ru.androidlearning.presentation.fragments.search.dialog.SearchHistoryDialogFragment
 import ru.androidlearning.presentation.navigation.DetailsFragmentScreen
 import ru.androidlearning.presentation.navigation.HistoryFragmentScreen
@@ -44,7 +44,7 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
                 adapter = translatedResultsListAdapter
                 addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
             }
-            InstantSearchStateFlow.beginObserveEditTextChanges(enterWordEditText)
+            InstantSearchFlow.beginObserveEditTextChanges(enterWordEditText)
         }
         initToolbar()
     }
@@ -57,7 +57,7 @@ class SearchFragment : BaseMVVMFragment(R.layout.fragment_search) {
     }
 
     override fun onDestroyView() {
-        InstantSearchStateFlow.endObserveEditTextChanges(viewBinding.enterWordEditText)
+        InstantSearchFlow.endObserveEditTextChanges(viewBinding.enterWordEditText)
         super.onDestroyView()
     }
 

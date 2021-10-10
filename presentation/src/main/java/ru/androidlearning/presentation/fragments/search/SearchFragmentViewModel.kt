@@ -12,12 +12,13 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import ru.androidlearning.core.DataLoadingState
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMViewModel
-import ru.androidlearning.presentation.fragments.InstantSearchStateFlow
+import ru.androidlearning.presentation.fragments.InstantSearchFlow
 import ru.androidlearning.presentation.interactor.Interactor
 import ru.androidlearning.utils.network.NetworkState
 import ru.androidlearning.utils.network.NetworkStateMonitor
 
 private const val SAVED_TRANSLATED_DATA_KEY = "SavedTranslatedData"
+private const val DEBOUNCE_TIME_MS = 500L
 
 @FlowPreview
 class SearchFragmentViewModel(
@@ -50,8 +51,8 @@ class SearchFragmentViewModel(
 
     private fun initInstantSearch() {
         coroutineScopeIO.launch {
-            InstantSearchStateFlow.searchStateFlow
-                .debounce(500)
+            InstantSearchFlow.searchFlow
+                .debounce(DEBOUNCE_TIME_MS)
                 .filter { it.isNotBlank() }
                 .distinctUntilChanged()
                 .collectLatest(::search)
