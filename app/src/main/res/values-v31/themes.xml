@@ -19,5 +19,11 @@
         <item name="android:textColorSecondary">@color/white</item>
         <!--v29-->
         <item name="android:forceDarkAllowed">true</item>
+        <!--v31-->
+        <item name="android:windowSplashScreenBackground">@color/orange</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/dark_orange</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_foreground_animated</item>
+        <item name="android:windowSplashScreenAnimationDuration">@integer/animation_duration_time</item>
+        <item name="android:windowSplashScreenBrandingImage">@drawable/ic_home</item>
     </style>
 </resources>

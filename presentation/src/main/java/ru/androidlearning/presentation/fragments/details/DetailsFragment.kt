@@ -1,6 +1,9 @@
 package ru.androidlearning.presentation.fragments.details
 
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -35,7 +38,17 @@ class DetailsFragment : Fragment(R.layout.fragment_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
+        initViews()
         showData()
+    }
+
+    private fun initViews() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val blurEffect = RenderEffect.createBlurEffect(10f, 10f, Shader.TileMode.MIRROR)
+            imageView.setOnClickListener {
+                imageView.setRenderEffect(blurEffect)
+            }
+        }
     }
 
     private fun initToolbar() {
