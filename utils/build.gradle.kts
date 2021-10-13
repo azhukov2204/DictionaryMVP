@@ -38,4 +38,6 @@ dependencies {
     androidTestImplementation(TestImpl.ESPRESSO)
     implementation(Kotlin.KOTLINX_COROUTINES_CORE)
     implementation(Kotlin.KOTLINX_COROUTINES_ANDROID)
+    implementation(Design.ANNOTATION)
+    implementation(Design.APPCOMPAT)
 }

@@ -2,16 +2,16 @@ package ru.androidlearning.core
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import ru.androidlearning.model.SearchData
+import ru.androidlearning.model.SearchDto
 
 @Parcelize
-data class DictionaryPresentationData(
+data class DictionaryPresentationDataModel(
     val translatedWords: List<TranslatedWord?>?
 ) : Parcelable {
     object Mapper {
-        fun map(searchDataList: List<SearchData>): DictionaryPresentationData =
-            DictionaryPresentationData(
-                searchDataList.map { searchData ->
+        fun map(searchDtoList: List<SearchDto>): DictionaryPresentationDataModel =
+            DictionaryPresentationDataModel(
+                searchDtoList.map { searchData ->
                     TranslatedWord(
                         id = searchData.id,
                         word = searchData.word,
@@ -23,21 +23,21 @@ data class DictionaryPresentationData(
                 }
             )
 
-        private fun convertSearchDataToMeaningsLine(searchData: SearchData): String? {
+        private fun convertSearchDataToMeaningsLine(searchDto: SearchDto): String? {
             val separator = ", "
-            return searchData.meanings
+            return searchDto.meanings
                 ?.map { meaning -> meaning.translation?.text }
                 ?.joinToString(separator = separator)
         }
 
-        private fun getTranscription(searchData: SearchData): String? =
-            searchData.meanings
+        private fun getTranscription(searchDto: SearchDto): String? =
+            searchDto.meanings
                 ?.takeIf { it.isNotEmpty() }
                 ?.first()
                 ?.transcription
 
-        private fun getImageUrl(searchData: SearchData): String? =
-            searchData.meanings
+        private fun getImageUrl(searchDto: SearchDto): String? =
+            searchDto.meanings
                 ?.takeIf { it.isNotEmpty() }
                 ?.first()
                 ?.imageUrl

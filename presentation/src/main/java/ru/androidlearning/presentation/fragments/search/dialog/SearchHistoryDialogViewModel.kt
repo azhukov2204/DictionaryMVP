@@ -2,6 +2,8 @@ package ru.androidlearning.presentation.fragments.search.dialog
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import ru.androidlearning.core.DataLoadingState
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMViewModel
 import ru.androidlearning.presentation.interactor.Interactor
 
@@ -19,12 +21,12 @@ class SearchHistoryDialogViewModel(
         }
     }
 
-    private fun doOnSearchSuccess(dictionaryPresentationData: ru.androidlearning.core.DictionaryPresentationData) {
-        dataLoadingLiveData.postValue(ru.androidlearning.core.DataLoadingState.Success(dictionaryPresentationData))
+    private fun doOnSearchSuccess(dictionaryPresentationDataModel: DictionaryPresentationDataModel) {
+        dataLoadingLiveData.postValue(DataLoadingState.Success(dictionaryPresentationDataModel))
     }
 
     private fun doOnSearchError(e: Throwable) {
         e.printStackTrace()
-        dataLoadingLiveData.postValue(ru.androidlearning.core.DataLoadingState.Error(e))
+        dataLoadingLiveData.postValue(DataLoadingState.Error(e))
     }
 }

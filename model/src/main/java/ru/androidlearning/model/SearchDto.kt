@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "search_data", indices = [Index("word")])
-data class SearchData(
+data class SearchDto(
     @PrimaryKey
     @ColumnInfo(name = "id") @SerializedName("id") val id: Int?,
     @ColumnInfo(name = "word") @SerializedName("text") val word: String?,

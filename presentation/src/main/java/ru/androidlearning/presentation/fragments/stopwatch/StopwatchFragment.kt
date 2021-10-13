@@ -11,6 +11,7 @@ import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.FragmentStopwatchBinding
 
 class StopwatchFragment : BaseMVVMFragment(R.layout.fragment_stopwatch) {
+
     private val viewBinding: FragmentStopwatchBinding by viewBinding(FragmentStopwatchBinding::bind)
     private val router: Router by inject()
     private val stopwatchViewModel: StopwatchViewModel by viewModel()
@@ -25,17 +26,16 @@ class StopwatchFragment : BaseMVVMFragment(R.layout.fragment_stopwatch) {
             stopwatchLiveDataList
                 .takeIf { it.isNotEmpty() }
                 ?.first()
-                ?.observe(this@StopwatchFragment) { time ->
+                ?.observe(viewLifecycleOwner) { time ->
                     viewBinding.textTime.text = time
                 }
 
             stopwatchLiveDataList
                 .takeIf { it.size > 1 }
                 ?.get(1)
-                ?.observe(this@StopwatchFragment) { time ->
+                ?.observe(viewLifecycleOwner) { time ->
                     viewBinding.textTimeSecond.text = time
                 }
-
         }
     }
 

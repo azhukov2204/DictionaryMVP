@@ -9,6 +9,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.terrakok.cicerone.Router
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.androidlearning.core.DataLoadingState
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.core.base_abstract_templates.BaseMVVMFragment
 import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.FragmentHistoryBinding
@@ -31,20 +33,20 @@ class HistoryFragment : BaseMVVMFragment(R.layout.fragment_history) {
 
     override fun observeToLiveData() {
         with(historyFragmentViewModel) {
-            getLiveData().observe(this@HistoryFragment) { dataLoadingState -> renderData(dataLoadingState) }
+            getLiveData().observe(viewLifecycleOwner) { dataLoadingState -> renderData(dataLoadingState) }
             getHistory()
         }
     }
 
-    private fun renderData(dataLoadingState: ru.androidlearning.core.DataLoadingState<ru.androidlearning.core.DictionaryPresentationData>) {
+    private fun renderData(dataLoadingState: DataLoadingState<DictionaryPresentationDataModel>) {
         when (dataLoadingState) {
-            is ru.androidlearning.core.DataLoadingState.Error -> doOnGetHistoryError(dataLoadingState.error)
-            is ru.androidlearning.core.DataLoadingState.Loading -> doOnHistoryLoading()
-            is ru.androidlearning.core.DataLoadingState.Success -> doOnGetHistorySuccess(dataLoadingState.data)
+            is DataLoadingState.Error -> doOnGetHistoryError(dataLoadingState.error)
+            is DataLoadingState.Loading -> doOnHistoryLoading()
+            is DataLoadingState.Success -> doOnGetHistorySuccess(dataLoadingState.data)
         }
     }
 
-    private fun doOnGetHistorySuccess(historyData: ru.androidlearning.core.DictionaryPresentationData) {
+    private fun doOnGetHistorySuccess(historyData: DictionaryPresentationDataModel) {
         showProgressBar(false)
         historyListAdapter.submitList(historyData.translatedWords)
         if (historyData.translatedWords.isNullOrEmpty()) {
@@ -63,8 +65,8 @@ class HistoryFragment : BaseMVVMFragment(R.layout.fragment_history) {
         showError(e.message)
     }
 
-    private fun onItemClick(dictionaryPresentationData: ru.androidlearning.core.DictionaryPresentationData.TranslatedWord) {
-        router.navigateTo(DetailsFragmentScreen(dictionaryPresentationData))
+    private fun onItemClick(dictionaryPresentationDataModel: DictionaryPresentationDataModel.TranslatedWord) {
+        router.navigateTo(DetailsFragmentScreen(dictionaryPresentationDataModel))
     }
 
     private fun showProgressBar(isShow: Boolean) {

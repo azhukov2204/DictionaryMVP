@@ -11,14 +11,20 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.github.terrakok.cicerone.Router
 import org.koin.android.ext.android.inject
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.fragmentScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.scope.Scope
+import ru.androidlearning.core.DataLoadingState
+import ru.androidlearning.core.DictionaryPresentationDataModel
 import ru.androidlearning.fragments.R
 import ru.androidlearning.fragments.databinding.DialogSearchHistoryBinding
 import ru.androidlearning.presentation.fragments.search.TranslatedResultsListAdapter
 import ru.androidlearning.presentation.navigation.DetailsFragmentScreen
 
-class SearchHistoryDialogFragment : DialogFragment(R.layout.dialog_search_history) {
+class SearchHistoryDialogFragment : DialogFragment(R.layout.dialog_search_history), AndroidScopeComponent {
 
+    override val scope: Scope by fragmentScope()
     private val viewBinding: DialogSearchHistoryBinding by viewBinding(DialogSearchHistoryBinding::bind)
     private val searchHistoryDialogViewModel: SearchHistoryDialogViewModel by viewModel()
     private val listAdapter: TranslatedResultsListAdapter by lazy { TranslatedResultsListAdapter(::onItemClick) }
@@ -58,24 +64,24 @@ class SearchHistoryDialogFragment : DialogFragment(R.layout.dialog_search_histor
         }
     }
 
-    private fun onItemClick(translatedWord: ru.androidlearning.core.DictionaryPresentationData.TranslatedWord) {
+    private fun onItemClick(translatedWord: DictionaryPresentationDataModel.TranslatedWord) {
         router.navigateTo(DetailsFragmentScreen(translatedWord))
         dismiss()
     }
 
     private fun subscribeToLiveData() {
-        searchHistoryDialogViewModel.getLiveData().observe(this) { dataLoadingState -> renderData(dataLoadingState) }
+        searchHistoryDialogViewModel.getLiveData().observe(viewLifecycleOwner) { dataLoadingState -> renderData(dataLoadingState) }
     }
 
-    private fun renderData(dataLoadingState: ru.androidlearning.core.DataLoadingState<ru.androidlearning.core.DictionaryPresentationData>) {
+    private fun renderData(dataLoadingState: DataLoadingState<DictionaryPresentationDataModel>) {
         when (dataLoadingState) {
-            is ru.androidlearning.core.DataLoadingState.Error -> showError(dataLoadingState.error)
-            is ru.androidlearning.core.DataLoadingState.Loading -> {}
-            is ru.androidlearning.core.DataLoadingState.Success -> doOnSearchSuccess(dataLoadingState.data)
+            is DataLoadingState.Error -> showError(dataLoadingState.error)
+            is DataLoadingState.Loading -> {}
+            is DataLoadingState.Success -> doOnSearchSuccess(dataLoadingState.data)
         }
     }
 
-    private fun doOnSearchSuccess(searchData: ru.androidlearning.core.DictionaryPresentationData) {
+    private fun doOnSearchSuccess(searchData: DictionaryPresentationDataModel) {
         listAdapter.submitList(searchData.translatedWords)
         if (searchData.translatedWords.isNullOrEmpty()) {
             showNoDataLabel()
