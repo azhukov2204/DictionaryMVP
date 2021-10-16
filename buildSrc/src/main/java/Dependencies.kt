@@ -2,9 +2,9 @@ import org.gradle.api.JavaVersion
 
 object Config {
     const val APPLICATION_ID = "ru.androidlearning.dictionary"
-    const val COMPILE_SDK = 30
+    const val COMPILE_SDK = 31
     const val MIN_SDK = 21
-    const val TARGET_SDK = 30
+    const val TARGET_SDK = 31
     const val JVM_TARGET = "1.8"
     val JAVA_VERSION = JavaVersion.VERSION_1_8
 }
@@ -22,7 +22,7 @@ object Modules {
 }
 
 object Versions {
-    const val GRADLE = "7.0.2"
+    const val GRADLE = "7.0.3"
     const val KOTLIN_GRADLE_PLUGIN = "1.5.31"
     const val RETROFIT2 = "2.9.0"
     const val KOIN = "3.1.2"
