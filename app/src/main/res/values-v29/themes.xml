@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Dictionary" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryVariant">@color/dark_orange</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/deep_orange</item>
-        <item name="colorSecondaryVariant">@color/dark_deep_orange</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-        <item name="background">@color/white</item>
-        <item name="backgroundColor">@color/white</item>
-        <item name="android:textViewStyle">@style/TextViewStyle</item>
-        <item name="android:textColorSecondary">@color/white</item>
+    <style name="Theme.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!--v29-->
         <item name="android:forceDarkAllowed">true</item>
     </style>
