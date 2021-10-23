@@ -43,6 +43,9 @@ object Versions {
     const val ANDROIDX_CONSTRAINT_LAYOUT = "2.1.1"
     const val ANDROIDX_LEGACY_SUPPORT = "1.0.0"
     const val ANDROIDX_ANNOTATION = "1.2.0"
+    const val MOCKITO = "4.0.0"
+    const val COROUTINES_TEST = "1.4.2"
+    const val CORE_TESTING = "2.1.0"
 }
 
 object Gradle {
@@ -63,6 +66,11 @@ object TestImpl {
     const val JUNIT = "junit:junit:${Versions.JUNIT}"
     const val ANDROIDX_JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_JUNIT}"
     const val ESPRESSO = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"
+    const val MOCKITO_CORE = "org.mockito:mockito-core:${Versions.MOCKITO}"
+    const val MOCKITO_INLINE = "org.mockito:mockito-inline:${Versions.MOCKITO}"
+    const val MOCKITO_KOTLIN = "org.mockito.kotlin:mockito-kotlin:${Versions.MOCKITO}"
+    const val KOTLINX_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES_TEST}"
+    const val CORE_TESTING = "androidx.arch.core:core-testing:${Versions.CORE_TESTING}"
 }
 
 object Retrofit {
