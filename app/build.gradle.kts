@@ -54,4 +54,5 @@ dependencies {
     implementation(Koin.KOIN_CORE)
     implementation(Koin.KOIN_ANDROID)
     implementation(Navigation.CICERONE)
+    debugImplementation(TestImpl.ESPRESSO_CONTRIB)
 }
