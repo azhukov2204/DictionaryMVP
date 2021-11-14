@@ -4,7 +4,7 @@ object Config {
     const val APPLICATION_ID = "ru.androidlearning.dictionary"
     const val COMPILE_SDK = 31
     const val MIN_SDK = 21
-    const val TARGET_SDK = 31
+    const val TARGET_SDK = 30  //временно, для тестов (тест фрагментов пока не работает с SDK 31)
     const val JVM_TARGET = "1.8"
     val JAVA_VERSION = JavaVersion.VERSION_1_8
 }
@@ -46,6 +46,7 @@ object Versions {
     const val MOCKITO = "4.0.0"
     const val COROUTINES_TEST = "1.4.2"
     const val CORE_TESTING = "2.1.0"
+    const val FRAGMENT_TESTING = "1.3.6"
 }
 
 object Gradle {
@@ -66,11 +67,15 @@ object TestImpl {
     const val JUNIT = "junit:junit:${Versions.JUNIT}"
     const val ANDROIDX_JUNIT = "androidx.test.ext:junit:${Versions.ANDROIDX_JUNIT}"
     const val ESPRESSO = "androidx.test.espresso:espresso-core:${Versions.ESPRESSO}"
+    const val ESPRESSO_CONTRIB = "androidx.test.espresso:espresso-contrib:${Versions.ESPRESSO}"
     const val MOCKITO_CORE = "org.mockito:mockito-core:${Versions.MOCKITO}"
     const val MOCKITO_INLINE = "org.mockito:mockito-inline:${Versions.MOCKITO}"
     const val MOCKITO_KOTLIN = "org.mockito.kotlin:mockito-kotlin:${Versions.MOCKITO}"
     const val KOTLINX_COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES_TEST}"
     const val CORE_TESTING = "androidx.arch.core:core-testing:${Versions.CORE_TESTING}"
+    const val FRAGMENT_TESTING = "androidx.fragment:fragment-testing:${Versions.FRAGMENT_TESTING}"
+    const val KOIN_TEST = "io.insert-koin:koin-test:${Versions.KOIN}"
+    const val KOIN_TEST_JUNIT4 = "io.insert-koin:koin-test-junit4:${Versions.KOIN}"
 }
 
 object Retrofit {

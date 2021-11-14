@@ -61,4 +61,6 @@ dependencies {
     implementation(ImageLoaders.GLIDE)
     kapt(ImageLoaders.GLIDE_COMPILER)
     implementation(Navigation.CICERONE)
+    debugImplementation(TestImpl.FRAGMENT_TESTING)
+    debugImplementation(TestImpl.ESPRESSO_CONTRIB)
 }
